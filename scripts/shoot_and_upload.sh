@@ -1,5 +1,5 @@
 #!/bin/bash
-/home/pi/bin/shoot >/tmp/shoot.log
+/home/pi/vej_web/scripts/shoot >/tmp/shoot.log
 img_file=`cat /tmp/shoot.log`
 weather_file=/home/pi/weather_data/`basename ${img_file/.jpg/.json}`
 python /home/pi/vej_web/scripts/get_weather.py $weather_file
