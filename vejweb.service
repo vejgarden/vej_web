@@ -8,7 +8,7 @@
 Description=Vej Webserver
 
 [Service]
-ExecStart=/bin/bash -c '/home/ubuntu/web/run_server.sh'
+ExecStart=/bin/bash -c '/home/ubuntu/vej_web/run_server.sh'
 Restart=on-abort
 
 [Install]
