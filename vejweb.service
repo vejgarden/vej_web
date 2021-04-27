@@ -1,0 +1,15 @@
+#copy this to /etc/systemd/system, and run
+
+#sudo systemctl daemon-reload
+#sudo systemctl [start|stop|restart|status] this_service
+#sudo systemctl enable this_service #to start on boot
+
+[Unit]
+Description=Vej Webserver
+
+[Service]
+ExecStart=/bin/bash -c '/home/ubuntu/web/run_server.sh'
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target
