@@ -3,9 +3,7 @@ from pprint import pprint
 import sys
 import os
 import json
-
-# API KEY
-API_key = "b3eb766864e430ffd822ca8083f9b6f8"
+from config import API_key
  
 # This stores the url
 base_url = "http://api.openweathermap.org/data/2.5/weather?"
