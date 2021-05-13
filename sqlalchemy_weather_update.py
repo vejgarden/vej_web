@@ -26,7 +26,7 @@ session = DBSession()
 
 files = glob.glob(os.path.join(WEATHER_FOLDER,'*.json'))
 files.sort() #last one is the latest
-print(files)
+#print(files)
 
 with open(files[-1]) as f:
   weather_data = json.load(f)
