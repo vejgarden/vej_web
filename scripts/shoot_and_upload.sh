@@ -9,10 +9,9 @@ hour=`date +"%H"`
 #then
 #	scp $img_file vej_ec2:/home/ubuntu/vej_web/static/photo
 #fi
-scp $img_file vej_ec2:/home/ubuntu/vej_web/static/photo
-
+scp $img_file vej_ec2:/home/ubuntu/vej_web/static/photo_tmp
 scp $weather_file vej_ec2:/home/ubuntu/vej_web/static/weather
-ssh -t vej_ec2 "cd /home/ubuntu/vej_web && /home/ubuntu/py385/bin/python sqlalchemy_weather_update.py"
+ssh -t vej_ec2 "cd /home/ubuntu/vej_web && /bin/bash update_server.sh"
 
 
 
