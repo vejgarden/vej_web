@@ -12,45 +12,68 @@
   font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;word-break:normal;}
 .tg th{background-color:#657b83;border-color:#93a1a1;border-style:solid;border-width:0px;color:#fdf6e3;
   font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
-.tg .tg-1wig{font-weight:bold;text-align:left;vertical-align:top}
-.tg .tg-5ddu{background-color:#eee8d5;font-weight:bold;text-align:left;vertical-align:top}
+.tg .tg-2bhk{background-color:#eee8d5;border-color:inherit;text-align:left;vertical-align:top}
 .tg .tg-alz1{background-color:#eee8d5;text-align:left;vertical-align:top}
+.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
 .tg .tg-0lax{text-align:left;vertical-align:top}
+.tg .tg-8nwd{background-color:#eee8d5;border-color:inherit;font-weight:bold;text-align:left;vertical-align:top}
+.tg .tg-fymr{border-color:inherit;font-weight:bold;text-align:left;vertical-align:top}
 </style>
 <table class="tg">
 <thead>
   <tr>
-	  <th class="tg-0lax" colspan="2"><img src="{{ user_image }}" width="640" height="480"></th>
+    <th class="tg-0pky">
+	    <a href="?phist={{ phist -1 }}&whist={{ whist }}">&lt;&lt;Prev</a></th>
+    <th class="tg-0pky" colspan="2">
+	    <p style="text-align:center;"><a href = "?phist=0&whist=0">Latest</a></p>
+	    <img src="{{ user_image }}" width="640" height="480"></th>
+    <th class="tg-0lax">
+	    {% if phist < 0 %}
+	    <a href="?phist={{ phist +1 }}&whist={{ whist }}">Next&gt;&gt;</a>
+    	    {% else %}
+	    	Next&gt;&gt;
+	    {% endif %}
+    </th>
   </tr>
 </thead>
 <tbody>
   <tr>
     <td class="tg-5ddu">Data Retrieval Time</td>
     <td class="tg-alz1">{{ time }}</td>
+    <td class="tg-2bhk" rowspan="6">
+	    <a href="?phist={{ phist }}&whist={{ whist -1}}">&lt;&lt;Prev</a></td>
+    <td class="tg-8nwd">Weather seen at</td>
+    <td class="tg-2bhk">{{ time }}</td>
+    <td class="tg-alz1" rowspan="6">
+	    {% if whist < 0 %}
+	    <a href="?phist={{ phist }}&whist={{ whist +1 }}">Next&gt;&gt;</a>
+	    {% else %}
+		    Next&gt;&gt;
+	    {% endif %}
+    </td>
   </tr>
   <tr>
-    <td class="tg-1wig">Plants Health</td>
-    <td class="tg-0lax">Good</td>
+    <td class="tg-fymr">Plants Health</td>
+    <td class="tg-0pky">Good</td>
   </tr>
   <tr>
-    <td class="tg-5ddu">Weather</td>
-    <td class="tg-alz1">{{ weather_main }} - {{ weather_desc }}</td>
+    <td class="tg-8nwd">Weather</td>
+    <td class="tg-2bhk">{{ weather_main }} - {{ weather_desc }}</td>
   </tr>
   <tr>
-    <td class="tg-1wig">Temperature</td>
-    <td class="tg-0lax">{{ temperature }}&deg;C ({{ temp_min }}~{{ temp_max }}&deg;C)</td>
+    <td class="tg-fymr">Temperature</td>
+    <td class="tg-0pky">{{ temperature }}&deg;C ({{ temp_min }}~{{ temp_max }}&deg;C)</td>
   </tr>
   <tr>
-    <td class="tg-5ddu">Feels like</td>
-    <td class="tg-alz1">{{ feels_like }}&deg;C</td>
+    <td class="tg-8nwd">Feels like</td>
+    <td class="tg-2bhk">{{ feels_like }}&deg;</td>
   </tr>
   <tr>
-    <td class="tg-1wig">Humidity</td>
-    <td class="tg-0lax">{{ humidity }}%</td>
+    <td class="tg-fymr">Humidity</td>
+    <td class="tg-0pky">{{ humidity }}%</td>
   </tr>
 </tbody>
 </table>
-
 </body>
 </html>
 

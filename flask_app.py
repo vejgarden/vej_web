@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import os
 import glob
 from sqlalchemy_declarative import WeatherRecord, Base
@@ -25,9 +25,22 @@ def get_celsius(kelvin):
 @app.route('/')
 @app.route('/index')
 def show_index():
+
     files=glob.glob(os.path.join(app.config['UPLOAD_FOLDER'], '*.jpg'))
     files.sort() #last one is the latest
-    latest_weather=session.query(WeatherRecord).order_by(WeatherRecord.id).all()[-1]
+
+    phist = request.args.get('phist')
+    whist = request.args.get('whist')
+    if phist is None:
+        phist=0
+    if whist is None:
+        whist=0
+
+    phist = int(phist)
+    whist = int(whist)
+    photo = files[phist-1]
+    latest_weather=session.query(WeatherRecord).order_by(WeatherRecord.id).all()[whist-1]
+
     temperature = get_celsius(latest_weather.temperature)
     feels_like = get_celsius(latest_weather.feels_like)
     temp_min= get_celsius(latest_weather.temp_min)
@@ -42,7 +55,7 @@ def show_index():
     humidity = latest_weather.humidity
 
 
-    return render_template("index.html", user_image = files[-1],
+    return render_template("index.html", user_image = photo,
             time=obs_time,
             temperature=temperature,
             temp_min=temp_min,
@@ -51,4 +64,6 @@ def show_index():
             weather_main=weather_main,
             weather_desc=weather_desc,
             humidity = humidity,
+            phist=phist,
+            whist=whist,
             )
