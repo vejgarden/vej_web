@@ -1,5 +1,6 @@
 #!/bin/bash
 imgname=/home/pi/webcam_imgs/`date +"%Y%m%d_%H%M"`.jpg
-fswebcam -p YUYV -d /dev/video0 -r 640x480 $imgname
+#fswebcam -p YUYV -d /dev/video0 -r 640x480 $imgname
+fswebcam -c  ~/.fswebcam.conf --save $imgname
 echo $imgname
 
