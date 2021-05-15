@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Vej Health Monitor</title>
+    {{ temperature_plot[0]|safe }}
 </head>
 <body>
 	<img src="static/img/vej_logo.png" alt="logo" width="100" height="100"><br>
@@ -72,6 +73,12 @@
   </tr>
 </tbody>
 </table>
+{% if temperature_plot != None %}
+<!-- script and div elements for Bokeh plot -->
+{{ temperature_plot[1]|safe }}
+{{ temperature_plot[2]|safe }}
+{% endif %}
+<br>
 
 <img src="static/img/vej_experiment1.jpg" width=30%>
 <img src="static/img/vej_experiment2.jpg" width=30%>
