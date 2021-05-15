@@ -36,25 +36,34 @@ def get_local_time(timestamp):
     local_time=tz.localize(datetime.fromtimestamp(timestamp),is_dst=True)
     return (datetime.fromtimestamp(timestamp)+local_time.utcoffset()).strftime('%Y-%m-%d %H:%M')
 
-def get_temperature():
+def get_weather():
     #returns a list of tuples (time, temperature)
-    res=session.query(WeatherRecord).with_entities(WeatherRecord.time, WeatherRecord.temperature)
-    res= [(t,get_local_time(t),get_celsius(k)) for (t,k) in res][-50:]
+    res=session.query(WeatherRecord).with_entities(WeatherRecord.time, WeatherRecord.temperature, WeatherRecord.humidity)
+    res= [(t,get_local_time(t),get_celsius(k),h) for (t,k,h) in res][-100:]
 
     timestamps=[]
     timelabels=[]
     temperatures=[]
-
-    for (timestamp,timelabel,temperature) in res:
+    humidities=[]
+    for (timestamp,timelabel,temperature,humidity) in res:
         timestamps.append(timestamp)
         timelabels.append(timelabel)
         temperatures.append(temperature)
-    return (timestamps, timelabels, temperatures)
+        humidities.append(humidity)
+    return (timestamps, timelabels, temperatures,humidities)
+def get_bokeh_plot_head():
+    head = """
+        <script src="https://cdn.bokeh.org/bokeh/release/bokeh-2.3.2.min.js"
+        crossorigin="anonymous"></script>
+        <script type="text/javascript">
+        Bokeh.set_log_level("info");
+        </script>
+    """
+    return head
+ 
 
-def plot(timestamps,timelabels,temperatures):
+def plot_temperature(timestamps,timelabels,temperatures):
     """Return filename of plot of the damped_vibration function."""
-
-    #[(1620901204, '2021-05-14 10:20', 8.4), (1620902128, '2021-05-14 10:35', 8.4), (1620902941, '2021-05-14 10:49', 8.0), (1620903446, '2021-05-14 10:57', 8.0), (1620904131, '2021-05-14 11:08', 8.0)]
 
     #into x,y data and 2nd column as the x-axis tick
     TOOLS = "pan,wheel_zoom,box_zoom,reset,save,box_select,lasso_select"
@@ -65,21 +74,40 @@ def plot(timestamps,timelabels,temperatures):
 
     p.xaxis.ticker = timestamps
     p.xaxis.major_label_overrides=(dict(zip(timestamps,timelabels)))
-    p.xaxis.major_label_orientation = pi/4
+    p.xaxis.major_label_orientation = pi/2
+    p.xaxis.ticker.desired_num_ticks = 1
 
     p.line(timestamps,temperatures, legend_label="Temperature", line_width=2)
 
     from bokeh.resources import CDN
     from bokeh.embed import components
     script, div = components(p)
-    head = """
-        <script src="https://cdn.bokeh.org/bokeh/release/bokeh-2.3.2.min.js"
-        crossorigin="anonymous"></script>
-        <script type="text/javascript">
-        Bokeh.set_log_level("info");
-        </script>
-        """
-    return head, script, div
+    
+    return get_bokeh_plot_head(), script, div
+
+def plot_humidity(timestamps,timelabels,humidities):
+    """Return filename of plot of the damped_vibration function."""
+
+    #into x,y data and 2nd column as the x-axis tick
+    TOOLS = "pan,wheel_zoom,box_zoom,reset,save,box_select,lasso_select"
+    p = plt.figure(title="Christchurch Humidity", tools=TOOLS,
+                   x_axis_label='Record Time', y_axis_label='Humidity(%')
+
+    # add a line renderer with legend and line thickness
+
+    p.xaxis.ticker = timestamps
+    p.xaxis.major_label_overrides=(dict(zip(timestamps,timelabels)))
+    p.xaxis.major_label_orientation = pi/2
+    p.xaxis.ticker.desired_num_ticks = 1
+
+    p.line(timestamps,humidities, legend_label="Humidity", line_width=2)
+
+    from bokeh.resources import CDN
+    from bokeh.embed import components
+    script, div = components(p)
+    
+    return get_bokeh_plot_head(), script, div
+
 
 @app.route('/')
 @app.route('/index')
@@ -112,7 +140,10 @@ def show_index():
     weather_desc = latest_weather.weather_desc
     humidity = latest_weather.humidity
 
-    temperature_plot  = plot(*get_temperature())
+
+    timestamps,timelabels,temperatures,humidities = get_weather()
+    temperature_plot  = plot_temperature(timestamps,timelabels,temperatures)
+    humidity_plot  = plot_humidity(timestamps,timelabels,humidities)
 
     return render_template("index.html", user_image = photo,
             time=obs_time,
@@ -126,4 +157,5 @@ def show_index():
             phist=phist,
             whist=whist,
             temperature_plot=temperature_plot,
+            humidity_plot=humidity_plot,
             )

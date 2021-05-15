@@ -79,7 +79,12 @@
 {{ temperature_plot[2]|safe }}
 {% endif %}
 <br>
-
+{% if humidity_plot != None %}
+<!-- script and div elements for Bokeh plot -->
+{{ humidity_plot[1]|safe }}
+{{ humidity_plot[2]|safe }}
+{% endif %}
+<br>
 <img src="static/img/vej_experiment1.jpg" width=30%>
 <img src="static/img/vej_experiment2.jpg" width=30%>
 
