@@ -91,7 +91,7 @@ def plot_humidity(timestamps,timelabels,humidities):
     #into x,y data and 2nd column as the x-axis tick
     TOOLS = "pan,wheel_zoom,box_zoom,reset,save,box_select,lasso_select"
     p = plt.figure(title="Christchurch Humidity", tools=TOOLS,
-                   x_axis_label='Record Time', y_axis_label='Humidity(%')
+                   x_axis_label='Record Time', y_axis_label='Humidity(%)')
 
     # add a line renderer with legend and line thickness
 
